@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Inicio de la configuracion de la pagina -->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kuromi's Shop</title>
+
+	<!-- Inicio de los estilos de la pagina -->
+	<style>
+		/* Estilo general del cuerpo de la pagina */
+		body {
+			margin: 0;
+			padding: 0;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			font-family: Arial, sans-serif;
+		}
+
+		/* Estilo de la parte de arriba con el titulo */
+		header {
+			background-color: #4a2e56;
+			color: white;
+			text-align: center;
+			padding: 20px;
+			width: 100%;
+			box-sizing: border-box;
+		}
+
+		/* Estilo de la barra de menu */
+		nav {
+			background-color: #333;
+			padding: 12px;
+			text-align: center;
+			width: 100%;
+			box-sizing: border-box;
+			position: sticky;
+			top: 0;
+			z-index: 100;
+		}
+
+		/* Estilo de los enlaces del menu */
+		nav a {
+			color: white;
+			margin: 0 15px;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+		/* Estilo del boton del carrito en el menu */
+		.btn-carrito-nav {
+			background-color: #6a0dad;
+			color: white;
+			border: none;
+			padding: 6px 12px;
+			border-radius: 15px;
+			cursor: pointer;
+			font-weight: bold;
+			margin-left: 15px;
+		}
+
+		/* Estilo de la caja donde van todos los productos */
+		.seccion-articulos {
+			margin: auto;
+			padding: 20px;
+			text-align: center;
+			width: 90%;
+			max-width: 1000px;
+		}
+
+		/* Estilo de cada grupo de productos */
+		.subseccion {
+			margin-bottom: 40px;
+		}
+
+		/* Estilo de los titulos de cada grupo */
+		.subseccion h3 {
+			color: #4a2e56;
+			border-bottom: 2px solid #4a2e56;
+			padding-bottom: 8px;
+			text-align: left;
+		}
+
+		/* Caja que acomoda las tarjetas de productos */
+		.contenedor-articulos {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 20px;
+			margin-top: 20px;
+		}
+
+		/* Estilo de cada tarjeta individual de producto */
+		.tarjeta-articulo {
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			padding: 15px;
+			width: 200px;
+			text-align: center;
+			box-sizing: border-box;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
+		/* Estilo de las fotos de los productos */
+		.tarjeta-articulo img {
+			width: 100%;
+			height: 150px;
+			object-fit: cover;
+			border-radius: 4px;
+		}
+
+		/* Estilo del nombre del producto */
+		.tarjeta-articulo h4 {
+			font-size: 16px;
+			margin: 10px 0 5px 0;
+		}
+
+		/* Estilo del precio del producto */
+		.tarjeta-articulo p {
+			font-weight: bold;
+			color: #4a2e56;
+			margin: 5px 0;
+		}
+
+		/* Estilo del boton para agregar productos */
+		.btn-agregar {
+			background-color: #4a2e56;
+			color: white;
+			border: none;
+			padding: 8px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-weight: bold;
+			margin-top: 10px;
+		}
+
+		/* Estilo de la ventana lateral del carrito */
+		.modal-carrito {
+			display: none;
+			position: fixed;
+			top: 0;
+			right: 0;
+			width: 300px;
+			height: 100%;
+			background-color: #fff;
+			box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+			z-index: 1000;
+			padding: 20px;
+			box-sizing: border-box;
+			flex-direction: column;
+		}
+
+		/* Clase para mostrar el carrito cuando se abre */
+		.modal-carrito.activo {
+			display: flex;
+		}
+
+		/* Parte de arriba dentro de la ventana del carrito */
+		.encabezado-carrito {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 2px solid #4a2e56;
+		}
+
+		/* Lista donde aparecen los productos agregados */
+		.lista-carrito {
+			flex: 1;
+			overflow-y: auto;
+			margin: 15px 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		/* Estilo de cada producto dentro del carrito */
+		.item-carrito {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 10px;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 5px;
+			font-size: 14px;
+		}
+
+		/* Estilo del boton rojo para quitar productos o cerrar */
+		.btn-eliminar {
+			background-color: #ff4d4d;
+			color: white;
+			border: none;
+			border-radius: 3px;
+			padding: 2px 6px;
+			cursor: pointer;
+		}
+
+		/* Estilo de la parte de abajo de la pagina */
+		footer {
+			background-color: #333;
+			color: white;
+			text-align: center;
+			padding: 15px;
+			width: 100%;
+			box-sizing: border-box;
+			margin-top: auto;
+		}
+	</style>
+	<!-- Fin de los estilos de la pagina -->
+</head>
+<!-- Fin de la configuracion de la pagina -->
+
+<!-- Inicio del contenido visible de la pagina -->
+<body>
+
+	<!-- Seccion del titulo principal -->
+	<header>
+		<h1>Kuromi's Shop</h1>
+	</header>
+
+	<!-- Seccion del menu de navegacion -->
+	<nav>
+		<a href="index.html">Inicio</a>
+		<a href="iniciosesion.html">Inicio de Sesión</a>
+		<a href="registro.html">Registro</a>
+		<button class="btn-carrito-nav" onclick="toggleCarrito()">🛒 Carrito (<span id="contador-carrito">0</span>)</button>
+	</nav>
+
+	<!-- Seccion principal de todos los articulos -->
+	<div class="seccion-articulos">
+		<h2>Nuestros Artículos</h2>
+
+		<!-- Seccion de ropa -->
+		<div class="subseccion">
+			<h3>Ropa</h3>
+			<div class="contenedor-articulos">
+				<div class="tarjeta-articulo">
+					<img src="sueterkuromi.jpg" alt="sueter de kuromi">
+					<h4>Sueter de Kuromi</h4>
+					<p>$300.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Sueter de Kuromi', 300)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="pijamakuromi.jpg" alt="Pijama de kuromi">
+					<h4>Pijama de Kuromi</h4>
+					<p>$300.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Pijama de Kuromi', 300)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="conjuntokuromi.jpg" alt="conjunto de kuromi">
+					<h4>conjunto de Kuromi</h4>
+					<p>$300.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Conjunto de Kuromi', 300)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="conjuntoveranokuromi.jpg" alt="conjunto con short de kuromi">
+					<h4>conjunto con short de Kuromi</h4>
+					<p>$200.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Conjunto con short de Kuromi', 200)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="chalecokuromi.jpg" alt="chaleco de kuromi">
+					<h4>chaleco de Kuromi</h4>
+					<p>$400.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Chaleco de Kuromi', 400)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="playerakuromi.jpg" alt="playera de kuromi">
+					<h4>playera de Kuromi</h4>
+					<p>$100.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Playera de Kuromi', 100)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="calcetaskuromi.jpg" alt="calcetas de kuromi">
+					<h4>calcetas de Kuromi</h4>
+					<p>$90.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Calcetas de Kuromi', 90)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="topmangalargakuromi.jpg" alt="top de kuromi">
+					<h4>top de Kuromi</h4>
+					<p>$200.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Top de Kuromi', 200)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="faldakuromi.jpg" alt="falda de kuromi">
+					<h4>falda de Kuromi</h4>
+					<p>$200.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Falda de Kuromi', 200)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="mamelucokuromi.jpg" alt="mameluco de kuromi">
+					<h4>mameluco de Kuromi</h4>
+					<p>$700.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Mameluco de Kuromi', 700)">Agregar al carrito</button>
+				</div>
+			</div>
+		</div>
+		<!-- Fin de la seccion de ropa -->
+
+		<!-- Seccion de accesorios y belleza -->
+		<div class="subseccion">
+			<h3>Accesorios y Belleza</h3>
+			<div class="contenedor-articulos">
+				<div class="tarjeta-articulo">
+					<img src="areteskuromi.jpg" alt="aretes de kuromi">
+					<h4>Aretes de Kuromi</h4>
+					<p>$120.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Aretes de Kuromi', 120)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="mochilakuromi.jpg" alt="mochila de kuromi">
+					<h4>Mochila Kuromi</h4>
+					<p>$700.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Mochila Kuromi', 700)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="scruchkuromi.jpg" alt="Scrunch de kuromi">
+					<h4>Scrunch de Kuromi</h4>
+					<p>$80.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Scrunch de Kuromi', 80)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="perfumekuromi.jpg" alt="perfume de kuromi">
+					<h4>Perfume de Kuromi</h4>
+					<p>$200.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Perfume de Kuromi', 200)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="audifonoskuromi.jpg" alt="audifonos de kuromi">
+					<h4>Audifonos de Kuromi</h4>
+					<p>$400.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Audifonos de Kuromi', 400)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="paletakuromi.jpg" alt="paleta de kuromi">
+					<h4>Paleta de Kuromi</h4>
+					<p>$200.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Paleta de Kuromi', 200)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="balsamokuromi.jpg" alt="Balsamo de kuromi">
+					<h4>Balsamo para labios de Kuromi</h4>
+					<p>$50.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Balsamo para labios de Kuromi', 50)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="brocheskuromi.jpg" alt="broches de kuromi">
+					<h4>Broches de Kuromi</h4>
+					<p>$100.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Broches de Kuromi', 100)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="glosskuromi.jpg" alt="Gloss de kuromi">
+					<h4>Gloss de Kuromi</h4>
+					<p>$90.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Gloss de Kuromi', 90)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="pinzakuromi.jpg" alt="Pinza para el cabello de kuromi">
+					<h4>Pinza para el cabello de Kuromi</h4>
+					<p>$80.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Pinza para el cabello de Kuromi', 80)">Agregar al carrito</button>
+				</div>
+			</div>
+		</div>
+		<!-- Fin de la seccion de accesorios y belleza -->
+
+		<!-- Seccion de peluches y figuras -->
+		<div class="subseccion">
+			<h3>Peluches y figuras</h3>
+			<div class="contenedor-articulos">
+				<div class="tarjeta-articulo">
+					<img src="babykuromi.jpg" alt="Peluche baby kuromi">
+					<h4>Peluche baby kuromi</h4>
+					<p>$800.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Peluche baby kuromi', 800)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="funkokuromi.jpg" alt="Funko pop de Kuromi">
+					<h4>Funko pop de Kuromi</h4>
+					<p>$500.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Funko pop de Kuromi', 500)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="peluchekuromi.jpg" alt="Peluche de Kuromi">
+					<h4>Peluche de Kuromi</h4>
+					<p>$300.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Peluche de Kuromi', 300)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="figuravinylokuromi.jpg" alt="Figura coleccionable de Kuromi">
+					<h4>Figura coleccionable de Kuromi</h4>
+					<p>$500.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Figura coleccionable de Kuromi', 500)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="llaverokuromi.jpg" alt="llavero de Kuromi">
+					<h4>llavero de Kuromi</h4>
+					<p>$200.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Llavero de Kuromi', 200)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="kuromicelular.jpg" alt="Abanico electrico de juguete en forma de celular de Kuromi">
+					<h4>Abanico electrico juguete celular Kuromi</h4>
+					<p>$300.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Abanico electrico celular', 300)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="lamparakuromi.jpg" alt="Lampara de Kuromi">
+					<h4>Lampara de Kuromi</h4>
+					<p>$400.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Lampara de Kuromi', 400)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="bocinakuromi.jpg" alt="Bocina bluethooth de Kuromi">
+					<h4>Bocina bluethooth de Kuromi</h4>
+					<p>$900.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Bocina bluetooth Kuromi', 900)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="legokuromi.jpg" alt="Lego de Kuromi">
+					<h4>Lego de Kuromi</h4>
+					<p>$100.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Lego de Kuromi', 100)">Agregar al carrito</button>
+				</div>
+				<div class="tarjeta-articulo">
+					<img src="kuromilolita.jpg" alt="Peluche con vestido lolita de Kuromi">
+					<h4>Peluche con vestido lolita de Kuromi</h4>
+					<p>$700.00</p>
+					<button class="btn-agregar" onclick="agregarAlCarrito('Peluche lolita Kuromi', 700)">Agregar al carrito</button>
+				</div>
+			</div>
+		</div>
+		<!-- Fin de la seccion de peluches y figuras -->
+
+	</div>
+	<!-- Fin de la seccion principal de articulos -->
+
+	<!-- Seccion de la ventana del carrito -->
+	<div id="modal-carrito" class="modal-carrito">
+		<div class="encabezado-carrito">
+			<h3>Carrito</h3>
+			<button class="btn-eliminar" onclick="toggleCarrito()">✕</button>
+		</div>
+		<ul id="lista-carrito" class="lista-carrito"></ul>
+		<div style="font-weight: bold; text-align: right;">
+			Total: $<span id="total-precio">0.00</span>
+		</div>
+	</div>
+	<!-- Fin de la ventana del carrito -->
+
+	<!-- Seccion del pie de pagina -->
+	<footer>
+		<p>| Andrea Franco Enriquez | 0541 | 5°I |</p>
+	</footer>
+
+	<!-- Inicio del codigo para que funcione el carrito -->
+	<script>
+		// Lista vacia para guardar los productos que se agregan
+		let carrito = [];
+
+		// Funcion para abrir y cerrar la ventana del carrito
+		function toggleCarrito() {
+			document.getElementById('modal-carrito').classList.toggle('activo');
+		}
+
+		// Funcion para agregar un producto al carrito o sumar uno si ya esta
+		function agregarAlCarrito(nombre, precio) {
+			const producto = carrito.find(p => p.nombre === nombre);
+			if (producto) {
+				producto.cantidad++;
+			} else {
+				carrito.push({ nombre, precio, cantidad: 1 });
+			}
+			actualizarCarrito();
+		}
+
+		// Funcion para quitar un producto del carrito
+		function eliminarDelCarrito(nombre) {
+			carrito = carrito.filter(p => p.nombre !== nombre);
+			actualizarCarrito();
+		}
+
+		// Funcion para mostrar los productos, el total y la cantidad en pantalla
+		function actualizarCarrito() {
+			const lista = document.getElementById('lista-carrito');
+			const totalElem = document.getElementById('total-precio');
+			const contadorElem = document.getElementById('contador-carrito');
+
+			lista.innerHTML = '';
+			let total = 0;
+			let cantidadTotal = 0;
+
+			carrito.forEach(item => {
+				const subtotal = item.precio * item.cantidad;
+				total += subtotal;
+				cantidadTotal += item.cantidad;
+
+				const li = document.createElement('li');
+				li.className = 'item-carrito';
+				li.innerHTML = `
+					<span>${item.nombre} x${item.cantidad}</span>
+					<span>$${subtotal} <button class="btn-eliminar" onclick="eliminarDelCarrito('${item.nombre}')">x</button></span>
+				`;
+				lista.appendChild(li);
+			});
+
+			totalElem.textContent = total.toFixed(2);
+			contadorElem.textContent = cantidadTotal;
+		}
+	</script>
+	<!-- Fin del codigo del carrito -->
+
+</body>
+<!-- Fin del contenido visible de la pagina -->
+</html>

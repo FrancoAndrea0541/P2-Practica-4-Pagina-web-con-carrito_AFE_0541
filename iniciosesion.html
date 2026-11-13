@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Inicio de la configuracion de la pagina -->
+<head>
+	<meta charset="UTF-8">
+
+	<!-- Inicio de los estilos de la pagina -->
+	<style>
+		/* Estilo general del cuerpo de la pagina */
+		body {
+			margin: 0;
+			padding: 0;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+		}
+
+		/* Estilo de la parte de arriba con el titulo */
+		header {
+			background-color: #4a2e56;
+			color: white;
+			text-align: center;
+			padding: 20px;
+			width: 100%;
+			box-sizing: border-box;
+		}
+
+		/* Estilo de la barra de menu */
+		nav {
+			background-color: #333;
+			padding: 12px;
+			text-align: center;
+			width: 100%;
+			box-sizing: border-box;
+		}
+
+		/* Estilo de los enlaces del menu */
+		nav a {
+			color: white;
+			margin: 0 15px;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+		/* Estilo de la caja del formulario para entrar */
+		.contenedor-login {
+			margin: auto;
+			padding: 25px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			width: 280px;
+			text-align: center;
+			box-sizing: border-box;
+		}
+
+		/* Estilo del titulo del formulario */
+		.contenedor-login h2 {
+			margin-top: 0;
+			margin-bottom: 20px;
+		}
+
+		/* Estilo de cada espacio para escribir datos */
+		.campo {
+			margin-bottom: 15px;
+			text-align: left;
+		}
+
+		/* Estilo de los textos que indican que escribir */
+		.campo label {
+			display: block;
+			margin-bottom: 5px;
+			font-size: 14px;
+		}
+
+		/* Estilo de los cuadros donde se escribe */
+		.campo input {
+			width: 100%;
+			padding: 8px;
+			box-sizing: border-box;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+		/* Estilo del boton para entrar */
+		.btn-login {
+			width: 100%;
+			padding: 10px;
+			background-color: #4a2e56;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		/* Estilo de la parte de abajo de la pagina */
+		footer {
+			background-color: #333;
+			color: white;
+			text-align: center;
+			padding: 15px;
+			width: 100%;
+			box-sizing: border-box;
+		}
+	</style>
+	<!-- Fin de los estilos de la pagina -->
+</head>
+<!-- Fin de la configuracion de la pagina -->
+
+<!-- Inicio del contenido visible de la pagina -->
+<body>
+	
+	<!-- Seccion del titulo principal -->
+	<header>
+		<h1>Kuromi's Shop</h1>
+	</header>
+
+	<!-- Seccion del menu de navegacion -->
+	<nav>
+		<a href="index.html">Inicio</a>
+		<a href="articulos.html">Articulos</a>
+		<a href="registro.html">Registro</a>
+	</nav>
+
+	<!-- Seccion principal del formulario de inicio de sesion -->
+	<div class="contenedor-login">
+		<h2>Iniciar Sesión</h2>
+		<!-- Inicio del formulario -->
+		<form action="login.php" method="POST">
+			<!-- Espacio para el correo o usuario -->
+			<div class="campo">
+				<label for="usuario">Correo o Usuario:</label>
+				<input type="text" id="usuario" name="usuario" required>
+			</div>
+
+			<!-- Espacio para la contraseña -->
+			<div class="campo">
+				<label for="password">Contraseña:</label>
+				<input type="password" id="password" name="password" required>
+			</div>
+
+			<!-- Boton para enviar los datos -->
+			<button type="submit" class="btn-login">Ingresar</button>
+		</form>
+		<!-- Fin del formulario -->
+	</div>
+	<!-- Fin de la seccion principal -->
+
+	<!-- Seccion del pie de pagina -->
+	<footer>
+		<p>| Andrea Franco Enriquez | 0541 | 5°I |</p>
+	</footer>
+</body>
+<!-- Fin del contenido visible de la pagina -->
+</html>
